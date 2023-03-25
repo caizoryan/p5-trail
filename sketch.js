@@ -7,16 +7,17 @@ function preload() {
   fontRegular = loadFont("./SuisseIntlLD-Regular.otf");
 }
 function setup() {
-  createCanvas(1000, 1000);
+  createCanvas(windowWidth, windowHeight);
+  setValues(width, height);
   trs.push(
     new TextTrail("LAURA", color(255, 200, 0), laura, 0),
     new TextTrail("COOMBS", color(255, 200, 0), coombs, 0),
-    new TextTrail("MARCH", color(255), date, (coombs.length - 2) * t * 2),
-    new TextTrail("28", color(255), date2, (coombs.length - 2) * t * 2)
+    new TextTrail("MARCH", color(255), date, 8 * t * 2),
+    new TextTrail("28", color(255), date2, 8 * t * 2)
   );
   setTimeout(() => {
     shw = true;
-  }, (coombs.length + date.length - 3) * t * 2);
+  }, 32 * t);
 }
 
 function draw() {
@@ -25,8 +26,8 @@ function draw() {
   fill(0);
   textFont(fontBold);
   if (shw) {
-    text("7PM", 230, height / 2 + 70);
-    text("—VIA ZOOM", 230 + 40, height / 2 + 100);
+    text("7PM", width / 2 - 300 + 30, height / 2 + 70);
+    text("—VIA ZOOM", width / 2 - 300, height / 2 + 100);
   }
   textFont(fontRegular);
   for (const x of trs) x.update();
@@ -42,18 +43,23 @@ class TextTrail {
     this.tl = new Timeline();
     this.x = [];
     this.y = [];
+
+    if (delay != 0) {
+      this.x.push([this.pos.x, delay]);
+      this.y.push([this.pos.y, delay]);
+    }
+
     for (const key of this.keyframes) {
       this.x.push([key.x, t]);
       this.x.push([key.x, t]);
       this.y.push([key.y, t]);
       this.y.push([key.y, t]);
     }
+
     this.tl.add(new PropKeyframes(this.pos, "x", this.x));
     this.tl.add(new PropKeyframes(this.pos, "y", this.y));
-    // this.tl.loop();
-    setTimeout(() => {
-      this.tl.animate();
-    }, delay);
+    this.tl.loop();
+    this.tl.animate();
     this.tl.setEasing("InOutQuad");
   }
   update() {
@@ -63,7 +69,7 @@ class TextTrail {
     for (const p of this.trail) {
       fill(this.border);
       stroke(this.border);
-      strokeWeight(20);
+      strokeWeight(27);
       strokeJoin(ROUND);
       textSize(100);
       text(this.text, p.x, p.y);
