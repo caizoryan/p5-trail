@@ -21,7 +21,7 @@ function setup() {
 }
 
 function draw() {
-  background(250, 0, 50, 200);
+  background(250, 0, 50);
   textSize(28);
   fill(0);
   textFont(fontBold);
@@ -66,10 +66,11 @@ class TextTrail {
     this.tl.update();
     if (this.trail.length > 50) this.trail.splice(0, 1);
     this.trail.push({ x: this.pos.x, y: this.pos.y });
-    for (const p of this.trail) {
+    for (let i = 0; i < this.trail.length; i++) {
+      let p = this.trail[i];
       fill(this.border);
       stroke(this.border);
-      strokeWeight(27);
+      strokeWeight(20 + i * 0.5);
       strokeJoin(ROUND);
       textSize(100);
       text(this.text, p.x, p.y);
