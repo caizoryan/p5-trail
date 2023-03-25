@@ -1,16 +1,34 @@
 let t = 200;
 let trs = [];
+let shw = false;
+let fontBold, fontRegular;
+function preload() {
+  fontBold = loadFont("./SuisseIntlLD-Bold.otf");
+  fontRegular = loadFont("./SuisseIntlLD-Regular.otf");
+}
 function setup() {
   createCanvas(1000, 1000);
   trs.push(
     new TextTrail("LAURA", color(255, 200, 0), laura, 0),
     new TextTrail("COOMBS", color(255, 200, 0), coombs, 0),
-    new TextTrail("MARCH", color(255), date, (coombs.length - 2) * t * 2)
+    new TextTrail("MARCH", color(255), date, (coombs.length - 2) * t * 2),
+    new TextTrail("28", color(255), date2, (coombs.length - 2) * t * 2)
   );
+  setTimeout(() => {
+    shw = true;
+  }, (coombs.length + date.length - 3) * t * 2);
 }
 
 function draw() {
   background(250, 0, 50, 200);
+  textSize(28);
+  fill(0);
+  textFont(fontBold);
+  if (shw) {
+    text("7PM", 230, height / 2 + 70);
+    text("—VIA ZOOM", 230 + 40, height / 2 + 100);
+  }
+  textFont(fontRegular);
   for (const x of trs) x.update();
 }
 
